@@ -45,22 +45,27 @@ class App extends Component {
     let startingVideo = videos[0];
     if (window.location.hash.indexOf("#") === 0) {
       let hashId = window.location.hash.slice(1);
-      startingVideo = videos.find(video => video.youtubeId === hashId) || startingVideo;
+      startingVideo =
+        videos.find(video => video.youtubeId === hashId) || startingVideo;
     }
 
-    this.state = { videos, selectedVideo: startingVideo, videoListShowing: true };
+    this.state = {
+      videos,
+      selectedVideo: startingVideo,
+      videoListShowing: true
+    };
     this.updateHashParam();
   }
 
   componentDidUpdate = () => {
     this.updateHashParam();
-  }
+  };
 
   updateHashParam = () => {
     const { selectedVideo } = this.state;
 
     window.location.hash = `#${selectedVideo.youtubeId}`;
-  }
+  };
 
   onVideoFinished = () => {
     const { videos, selectedVideo } = this.state;
@@ -94,7 +99,7 @@ class App extends Component {
                   <VideoList
                     videos={videos}
                     selectedVideo={selectedVideo}
-                    onSelect={(video) => this.setState({ selectedVideo: video })}
+                    onSelect={video => this.setState({ selectedVideo: video })}
                   />
                 </Grid>
               ) : null}
