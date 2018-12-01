@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { shuffle } from "lodash";
 
 import VideoListItem from "./VideoListItem";
-import Videos from "../data/videos.json";
 
 const styles = {
   root: {
@@ -14,28 +12,15 @@ const styles = {
 };
 
 class VideoList extends Component {
-  constructor(props) {
-    super(props);
-
-    let videos = shuffle(Videos);
-    this.state = { videos };
-  }
-
-  componentDidMount() {
-    // Play first video by default
-    this.props.onSelect(this.state.videos[0]);
-  }
-
   render() {
-    const { classes } = this.props;
-    const { videos } = this.state;
+    const { classes, videos } = this.props;
 
     return (
       <div className={classes.root}>
         <div className={classes.inner}>
-          {videos.map((video, index) => (
+          {videos.map(video => (
             <VideoListItem
-              key={index}
+              key={video.youtubeId}
               video={video}
               onSelect={this.props.onSelect}
             />
@@ -47,7 +32,8 @@ class VideoList extends Component {
 }
 
 VideoList.propTypes = {
-  selectedVideo: PropTypes.object,
+  selectedVideo: PropTypes.object.isRequired,
+  videos: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired
 };
 

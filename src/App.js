@@ -7,15 +7,19 @@ import {
 import red from "@material-ui/core/colors/red";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-import SnowStorm from "react-snowstorm";
+import { sample, shuffle } from "lodash";
 
 import Header from "./components/Header";
 import VideoPlayer from "./components/VideoPlayer";
 import VideoList from "./components/VideoList";
+import Videos from "./data/videos";
 
 const theme = createMuiTheme({
   palette: {
     primary: red
+  },
+  typography: {
+    useNextVariants: true
   }
 });
 
@@ -26,34 +30,68 @@ const styles = theme => ({
     flexGrow: 1,
     maxHeight: "100vh",
     minHeight: "100vh"
+  },
+  container: {
+    flexGrow: 1
   }
 });
 
 class App extends Component {
-  state = { selectedVideo: null };
+  constructor(props) {
+    super(props);
+
+    let videos = shuffle(Videos);
+    this.state = { videos, selectedVideo: videos[0], videoListShowing: true };
+  }
+
+  onVideoSelect = video => {
+    let videos = shuffle(Videos); // If select video, shuffle
+
+    this.setState({ selectedVideo: video, videos });
+  };
+
+  onVideoFinished = () => {
+    const { videos, selectedVideo } = this.state;
+
+    let currentVideoIndex = videos.indexOf(selectedVideo);
+    if (currentVideoIndex < videos.length - 1) {
+      this.setState({ selectedVideo: videos[currentVideoIndex + 1] });
+    } else {
+      this.setState({ selectedVideo: videos[0] });
+    }
+  };
 
   render() {
     const { classes } = this.props;
-    const { selectedVideo } = this.state;
+    const { videos, selectedVideo, videoListShowing } = this.state;
 
     return (
       <Fragment>
         <CssBaseline />
-        <SnowStorm freezeOnBlur={false} />
         <MuiThemeProvider theme={theme}>
           <div className={classes.root}>
-            <Header />
+            <Header
+              onMenuIconClicked={() =>
+                this.setState({ videoListShowing: !videoListShowing })
+              }
+            />
 
-            <Grid container>
-              <Grid item xs={2}>
-                <VideoList
+            <Grid container className={classes.container}>
+              {videoListShowing ? (
+                <Grid item xs={2}>
+                  <VideoList
+                    videos={videos}
+                    selectedVideo={selectedVideo}
+                    onSelect={this.onVideoSelect}
+                  />
+                </Grid>
+              ) : null}
+
+              <Grid item xs={videoListShowing ? 10 : 12}>
+                <VideoPlayer
                   selectedVideo={selectedVideo}
-                  onSelect={selectedVideo => this.setState({ selectedVideo })}
+                  onVideoFinished={this.onVideoFinished}
                 />
-              </Grid>
-
-              <Grid item xs={10}>
-                <VideoPlayer selectedVideo={selectedVideo} />
               </Grid>
             </Grid>
           </div>

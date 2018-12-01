@@ -1,8 +1,10 @@
-import "@babel/polyfill";
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-
 import "./index.css";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import "@babel/polyfill";
+import ReactDOM from "react-dom";
+import React from "react";
+
+import App from "./App";
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);

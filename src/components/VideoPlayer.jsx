@@ -15,25 +15,34 @@ class VideoPlayer extends Component {
     }
   };
 
+  youtubePlayerReady = event => {
+    const { onVideoFinished } = this.props;
+
+    if (typeof onVideoFinished === "function") {
+      event.target.addEventListener("onStateChange", videoState => {
+        if (videoState.data === 0) {
+          onVideoFinished();
+        }
+      });
+    }
+  };
+
   render() {
     const { selectedVideo } = this.props;
 
-    if (!selectedVideo) {
-      return null;
-    }
-
-    return (
+    return selectedVideo ? (
       <YouTube
         videoId={selectedVideo.youtubeId}
         opts={this.youtubeOptions}
-        onReady={this._onReady}
+        onReady={this.youtubePlayerReady}
       />
-    );
+    ) : null;
   }
 }
 
 VideoPlayer.propTypes = {
-  selectedVideo: PropTypes.object
+  selectedVideo: PropTypes.object.isRequired,
+  onVideoFinished: PropTypes.func
 };
 
 export default VideoPlayer;
