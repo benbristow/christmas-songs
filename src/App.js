@@ -41,14 +41,26 @@ class App extends Component {
     super(props);
 
     let videos = shuffle(Videos);
-    this.state = { videos, selectedVideo: videos[0], videoListShowing: true };
+
+    let startingVideo = videos[0];
+    if (window.location.hash.indexOf("#") === 0) {
+      let hashId = window.location.hash.slice(1);
+      startingVideo = videos.find(video => video.youtubeId === hashId) || startingVideo;
+    }
+
+    this.state = { videos, selectedVideo: startingVideo, videoListShowing: true };
+    this.updateHashParam();
   }
 
-  onVideoSelect = video => {
-    let videos = shuffle(Videos); // If select video, shuffle
+  componentDidUpdate = () => {
+    this.updateHashParam();
+  }
 
-    this.setState({ selectedVideo: video, videos });
-  };
+  updateHashParam = () => {
+    const { selectedVideo } = this.state;
+
+    window.location.hash = `#${selectedVideo.youtubeId}`;
+  }
 
   onVideoFinished = () => {
     const { videos, selectedVideo } = this.state;
@@ -82,7 +94,7 @@ class App extends Component {
                   <VideoList
                     videos={videos}
                     selectedVideo={selectedVideo}
-                    onSelect={this.onVideoSelect}
+                    onSelect={(video) => this.setState({ selectedVideo: video })}
                   />
                 </Grid>
               ) : null}
