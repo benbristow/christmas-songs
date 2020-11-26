@@ -7,7 +7,7 @@ import {
 import red from "@material-ui/core/colors/red";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-import { sample, shuffle } from "lodash";
+import { shuffle } from "lodash";
 
 import Header from "./components/Header";
 import VideoPlayer from "./components/VideoPlayer";
@@ -23,15 +23,25 @@ const theme = createMuiTheme({
   }
 });
 
-const styles = theme => ({
+const styles = () => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-    maxHeight: "100vh",
-    minHeight: "100vh"
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'hidden'
   },
   container: {
+    flexGrow: 1
+  },
+  videoListContainer: {
+    display: 'flex',
+    position: 'relative'
+  },
+  videoContainer: {
+    flex: 1
+  },
+  video: {
+    width: '100%',
     flexGrow: 1
   }
 });
@@ -95,7 +105,7 @@ class App extends Component {
 
             <Grid container className={classes.container}>
               {videoListShowing ? (
-                <Grid item xs={2}>
+                <Grid className={classes.videoListContainer} item xs={2}>
                   <VideoList
                     videos={videos}
                     selectedVideo={selectedVideo}
@@ -104,7 +114,7 @@ class App extends Component {
                 </Grid>
               ) : null}
 
-              <Grid item xs={videoListShowing ? 10 : 12}>
+              <Grid className={classes.videoContainer} item xs={videoListShowing ? 10 : 12}>
                 <VideoPlayer
                   selectedVideo={selectedVideo}
                   onVideoFinished={this.onVideoFinished}

@@ -6,8 +6,9 @@ import VideoListItem from "./VideoListItem";
 
 const styles = {
   root: {
-    maxHeight: "100%",
-    overflowY: "scroll"
+    overflowY: 'scroll',
+    position: 'absolute',
+    maxHeight: '100%'
   }
 };
 
@@ -17,15 +18,13 @@ class VideoList extends Component {
 
     return (
       <div className={classes.root}>
-        <div className={classes.inner}>
-          {videos.map(video => (
-            <VideoListItem
-              key={video.youtubeId}
-              video={video}
-              onSelect={this.props.onSelect}
-            />
-          ))}
-        </div>
+        {videos.map(video => (
+          <VideoListItem
+            key={video.youtubeId}
+            video={video}
+            onSelect={this.props.onSelect}
+          />
+        ))}
       </div>
     );
   }

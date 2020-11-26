@@ -1,6 +1,13 @@
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import YouTube from "react-youtube";
+
+const styles = () => ({
+  container: {
+    height: '100%'
+  }
+});
 
 class VideoPlayer extends Component {
   youtubeOptions = {
@@ -28,10 +35,11 @@ class VideoPlayer extends Component {
   };
 
   render() {
-    const { selectedVideo } = this.props;
+    const { classes, selectedVideo } = this.props;
 
     return selectedVideo ? (
       <YouTube
+        containerClassName={classes.container}
         videoId={selectedVideo.youtubeId}
         opts={this.youtubeOptions}
         onReady={this.youtubePlayerReady}
@@ -45,4 +53,4 @@ VideoPlayer.propTypes = {
   onVideoFinished: PropTypes.func
 };
 
-export default VideoPlayer;
+export default withStyles(styles)(VideoPlayer);
