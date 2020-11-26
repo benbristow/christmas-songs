@@ -9,22 +9,20 @@ const styles = () => ({
   }
 });
 
-class VideoPlayer extends Component {
-  youtubeOptions = {
-    height: "100%",
-    width: "100%",
-    playerVars: {
-      autoplay: 1,
-      controls: 1,
-      disablekb: 1,
-      iv_load_policy: 3, //Hide annotations
-      modestbranding: 1
-    }
-  };
+const youtubeOptions = {
+  height: "100%",
+  width: "100%",
+  playerVars: {
+    autoplay: 1,
+    controls: 1,
+    disablekb: 1,
+    iv_load_policy: 3, //Hide annotations
+    modestbranding: 1
+  }
+};
 
-  youtubePlayerReady = event => {
-    const { onVideoFinished } = this.props;
-
+export const VideoPlayer = ({ classes, selectedVideo, onVideoFinished }) => {
+  const youtubePlayerReady = event => {
     if (typeof onVideoFinished === "function") {
       event.target.addEventListener("onStateChange", videoState => {
         if (videoState.data === 0) {
@@ -32,20 +30,17 @@ class VideoPlayer extends Component {
         }
       });
     }
-  };
-
-  render() {
-    const { classes, selectedVideo } = this.props;
-
-    return selectedVideo ? (
-      <YouTube
-        containerClassName={classes.container}
-        videoId={selectedVideo.youtubeId}
-        opts={this.youtubeOptions}
-        onReady={this.youtubePlayerReady}
-      />
-    ) : null;
   }
+
+
+  return selectedVideo ? (
+    <YouTube
+      containerClassName={classes.container}
+      videoId={selectedVideo.youtubeId}
+      opts={youtubeOptions}
+      onReady={youtubePlayerReady}
+    />
+  ) : null;
 }
 
 VideoPlayer.propTypes = {

@@ -12,23 +12,17 @@ const styles = {
   }
 };
 
-class VideoList extends Component {
-  render() {
-    const { classes, videos } = this.props;
-
-    return (
-      <div className={classes.root}>
-        {videos.map(video => (
-          <VideoListItem
-            key={video.youtubeId}
-            video={video}
-            onSelect={this.props.onSelect}
-          />
-        ))}
-      </div>
-    );
-  }
-}
+const VideoList = ({ classes, videos, onSelect }) => (
+  <div className={classes.root}>
+    {videos.map(video => (
+      <VideoListItem
+        key={video.youtubeId}
+        video={video}
+        onSelect={onSelect}
+      />
+    ))}
+  </div>
+);
 
 VideoList.propTypes = {
   selectedVideo: PropTypes.object.isRequired,

@@ -1,9 +1,5 @@
 import React, { Fragment, Component } from "react";
-import {
-  withStyles,
-  MuiThemeProvider,
-  createMuiTheme
-} from "@material-ui/core/styles";
+import { withStyles, MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -50,13 +46,12 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    let videos = shuffle(Videos);
+    const videos = shuffle(Videos);
 
     let startingVideo = videos[0];
     if (window.location.hash.indexOf("#") === 0) {
       let hashId = window.location.hash.slice(1);
-      startingVideo =
-        videos.find(video => video.youtubeId === hashId) || startingVideo;
+      startingVideo = videos.find(video => video.youtubeId === hashId) || startingVideo;
     }
 
     this.state = {
@@ -73,7 +68,6 @@ class App extends Component {
 
   updateHashParam = () => {
     const { selectedVideo } = this.state;
-
     window.location.hash = `#${selectedVideo.youtubeId}`;
   };
 
